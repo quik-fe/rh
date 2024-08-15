@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rh playground</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "@quik-fe/signal": "https://unpkg.com/@quik-fe/signal/dist/main.module.js",
+                "htm": "https://unpkg.com/htm?module",
+                "@rhjs/core": "/packages/rh/dist/main.module.mjs"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <script type="module">
+        import { h, def } from "../dist/main.module.mjs";
+        import { css, html } from './utils.mjs';
+
+        const LiveComponent = ({ id }) => {
+            def(() => setInterval(() => {
+                console.log(`live: ${id} | ${Date.now()}`);
+            }, 1000)
+            ).cleanup(clearInterval);
+            return null;
+        }
+
+        const show = def(true);
+        document.body.append(
+            html`
+            <div>
+                ${css`
+                    html {
+                        background-color: #0f0f0f;
+                        color: #fff;
+                    }
+                    button {
+                        border: 0;
+                        padding: 10px;
+                        background-color: #0077cc;
+                        color: #fff;
+                        font-size: 16px;
+                        cursor: pointer;
+                        margin-right: 10px;
+                    }
+                    button:hover {
+                        background-color: #0066aa;
+                    }
+                    button:active {
+                        background-color: #005588;
+                    }
+                    div {
+                        padding: 20px;
+                    }
+                `}
+                <button onclick=${() => show(x => !x)}>${() => show() ? 'Hide' : 'Show'
+                }</button>
+                <div>
+                    ${() => show() ? h(LiveComponent, { id: 1 }) : null}
+                    ${() => show() ? h(LiveComponent, { id: 2 }) : null}
+                </div>
+            </div>
+                `
+        )
+    </script>
+</body>
+
+</html>

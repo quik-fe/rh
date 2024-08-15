@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rh playground</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "@quik-fe/signal": "https://unpkg.com/@quik-fe/signal/dist/main.module.js",
+                "htm": "https://unpkg.com/htm?module"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel" data-type="module" data-presets="react">
+        import { h, toRef, toValue, createEffect } from "../dist/main.module.mjs";
+        import { css, html } from './utils.mjs';
+
+        globalThis.React = {
+            createElement: h
+        }
+
+        const cnt = toRef(0);
+        document.body.append(
+            <div>
+                {
+                    css`
+                    html {
+                        background-color: #0f0f0f;
+                        color: #fff;
+                    }
+                    button {
+                        border: 0;
+                        padding: 10px;
+                        background-color: #0077cc;
+                        color: #fff;
+                        font-size: 16px;
+                        cursor: pointer;
+                        margin-right: 10px;
+                    }
+                    button:hover {
+                        background-color: #0066aa;
+                    }
+                    button:active {
+                        background-color: #005588;
+                    }
+                    div {
+                        padding: 20px;
+                    }
+                  `
+                }
+                {css`
+                    p {
+                        font-size: ${() => 24 + toValue(cnt)}px;
+                    }
+                    `}
+                <button onclick={() => cnt.value++}> + + </button>
+                <button onclick={() => cnt.value--}> - - </button>
+                <p>count: {cnt}</p>
+            </div>
+        )
+    </script>
+</body>
+
+</html>

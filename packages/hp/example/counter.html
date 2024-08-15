@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rh playground</title>
+    <script type="importmap">
+        {
+            "imports": {
+                "@quik-fe/signal": "https://unpkg.com/@quik-fe/signal/dist/main.module.js",
+                "htm": "https://unpkg.com/htm?module",
+                "@rhjs/core": "/packages/rh/dist/main.module.mjs"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <script type="module">
+        import { h, hyper } from "../dist/main.module.mjs";
+        import { css, html } from './utils.mjs';
+
+        const inc = (state, evt, n = 1) => ({ ...state, count: state.count + n });
+
+        const App = hyper(
+            { count: 1 },
+            (state, { act }) =>
+                html`
+                <div>
+                    <h1>${() => state.count}</h1>
+                    <button onclick=${act(inc)}>Increment</button>
+                    <button onclick=${act(inc, -1)}>Decrement</button>
+                </div>
+            `
+        )
+
+        document.body.append(
+            html`
+            <div>
+                ${css`
+                    html {
+                        background-color: #0f0f0f;
+                        color: #fff;
+                    }
+                    button {
+                        border: 0;
+                        padding: 10px;
+                        background-color: #0077cc;
+                        color: #fff;
+                        font-size: 16px;
+                        cursor: pointer;
+                        margin-right: 10px;
+                    }
+                    button:hover {
+                        background-color: #0066aa;
+                    }
+                    button:active {
+                        background-color: #005588;
+                    }
+                    div {
+                        padding: 20px;
+                    }
+                `}
+                <${App} />
+                <${App} count=${100} />
+            </div>
+                `
+        )
+    </script>
+</body>
+
+</html>

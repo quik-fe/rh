@@ -1,0 +1,35 @@
+{
+  "name": "hp",
+  "version": "1.0.0",
+  "description": "",
+  "source": "src/main.ts",
+  "main": "dist/main.umd.js",
+  "module": "dist/main.module.mjs",
+  "unpkg": "dist/main.umd.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    "types": "./dist/main.d.ts",
+    "require": "./dist/main.js",
+    "default": "./dist/main.modern.mjs"
+  },
+  "scripts": {
+    "build-dts": "rollup -c ../../common/rollup.dts.config.js",
+    "build-js": "microbundle --define process.env.NODE_ENV=production,PKG_VERSION=$npm_package_version",
+    "build": "pnpm build-js && pnpm build-dts",
+    "watch": "microbundle watch --define process.env.NODE_ENV=development,PKG_VERSION=$npm_package_version --compress false",
+    "dev": "pnpm watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "microbundle": "^0.15.1",
+    "rollup": "^4.19.2",
+    "rollup-plugin-dts": "^6.1.1",
+    "tslib": "^2.6.3",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@rhjs/core": "workspace:^"
+  }
+}
